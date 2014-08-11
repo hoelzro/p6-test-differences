@@ -29,12 +29,15 @@ module Test::Differences:vers<0.1.0>:auth<hoelzro> {
             if &compare($head, $got-head) && &compare($head, $expected-head) {
                 diag("\@got[$got-index] and \@expected[$expected-index] are equal");
                 $_++ for $lcs-index, $got-index, $expected-index;
-            } elsif &compare($head, $got-head) {
-                diag("deleted \@expected[$expected-index]");
-                $expected-index++;
-            } elsif &compare($head, $expected-head) {
-                diag("added \@got[$got-index]");
-                $got-index++;
+            } else {
+                if !&compare($head, $expected-head) {
+                    diag("deleted \@expected[$expected-index]");
+                    $expected-index++;
+                }
+                if !&compare($head, $got-head) {
+                    diag("added \@got[$got-index]");
+                    $got-index++;
+                }
             }
         }
 
